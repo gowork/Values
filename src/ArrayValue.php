@@ -9,6 +9,7 @@ use ArrayAccess;
 /**
  * @template TValue
  * @extends Collection<TValue>
+ * @extends Stack<TValue>
  * @extends IteratorAggregate<int, TValue>
  * @extends ArrayAccess<int, TValue>
  */

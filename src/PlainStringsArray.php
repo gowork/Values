@@ -2,8 +2,8 @@
 
 namespace GW\Value;
 
-use Traversable;
 use InvalidArgumentException;
+use Traversable;
 use function in_array;
 use function is_scalar;
 
@@ -28,12 +28,9 @@ final class PlainStringsArray implements StringsArray
         return new self(Wrap::array($strings));
     }
 
-    /**
-     * @param StringsArray $other
-     */
-    public function join(ArrayValue $other): PlainStringsArray
+    public function join(StringsArray $other): PlainStringsArray
     {
-        return new self($this->strings->join($this->mapStringValues($other)));
+        return new self($this->strings->join($other->toArrayValue()));
     }
 
     public function slice(int $offset, int $length): PlainStringsArray
@@ -41,30 +38,27 @@ final class PlainStringsArray implements StringsArray
         return new self($this->strings->slice($offset, $length));
     }
 
-    /**
-     * @param StringsArray $replacement
-     */
-    public function splice(int $offset, int $length, ?ArrayValue $replacement = null): PlainStringsArray
+    public function splice(int $offset, int $length, ?StringsArray $replacement = null): PlainStringsArray
     {
-        return new self($this->strings->splice($offset, $length, $replacement));
+        return new self(
+            $this->strings->splice($offset, $length, $replacement === null ? null : $replacement->toArrayValue())
+        );
     }
 
     /**
-     * @param StringsArray $other
      * @param (callable(StringValue $valueA, StringValue $valueB):int)|null $comparator
      */
-    public function diff(ArrayValue $other, ?callable $comparator = null): PlainStringsArray
+    public function diff(StringsArray $other, ?callable $comparator = null): PlainStringsArray
     {
-        return new self($this->strings->diff($this->mapStringValues($other), $comparator));
+        return new self($this->strings->diff($other->toArrayValue(), $comparator));
     }
 
     /**
-     * @param StringsArray $other
      * @param callable(StringValue $valueA, StringValue $valueB):int|null $comparator
      */
-    public function intersect(ArrayValue $other, ?callable $comparator = null): PlainStringsArray
+    public function intersect(StringsArray $other, ?callable $comparator = null): PlainStringsArray
     {
-        return new self($this->strings->intersect($this->mapStringValues($other), $comparator));
+        return new self($this->strings->intersect($other->toArrayValue(), $comparator));
     }
 
     /**
@@ -95,25 +89,22 @@ final class PlainStringsArray implements StringsArray
     }
 
     /**
-     * @param callable(StringValue $value):string $reducer
-     * @phpstan-return AssocValue<string, ArrayValue<StringValue>>
-     * @phpstan-ignore-next-line shrug
+     * @template TNewKey
+     * @param callable(StringValue $value):TNewKey $reducer
+     * @phpstan-return AssocValue<TNewKey, StringsArray>
      */
     public function groupBy(callable $reducer): AssocValue
     {
-        // @phpstan-ignore-next-line shrug
         return $this->strings
             ->groupBy($reducer)
-            // @phpstan-ignore-next-line shrug
             ->map(
-                /** @return ArrayValue<StringValue> */
-                static fn(ArrayValue $value): ArrayValue => $value->toStringsArray()
+                /** @param ArrayValue<StringValue> $value */
+                static fn(ArrayValue $value): StringsArray => $value->toStringsArray()
             );
     }
 
     /**
      * @return ArrayValue<array<int, StringValue>>
-     * @phpstan-ignore-next-line shrug
      */
     public function chunk(int $size): ArrayValue
     {
@@ -265,11 +256,11 @@ final class PlainStringsArray implements StringsArray
 
     /**
      * @param int $offset
-     * @param StringValue $value
+     * @param StringValue|string $value
      */
     public function offsetSet($offset, $value): void
     {
-        $this->strings->offsetSet($offset, $value);
+        $this->strings->offsetSet($offset, Wrap::string($value));
     }
 
     /**
@@ -498,7 +489,7 @@ final class PlainStringsArray implements StringsArray
 
     /**
      * @param string|StringValue $pattern
-     * @return ArrayValue<string[][]>
+     * @return ArrayValue<array<int, string>>
      */
     public function matchAllPatterns($pattern): ArrayValue
     {
