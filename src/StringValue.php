@@ -148,7 +148,7 @@ interface StringValue extends Value
 
     /**
      * @param string|StringValue $pattern
-     * @return ArrayValue<string[][]>
+     * @return ArrayValue<array<int, string>>
      */
     public function matchAllPatterns($pattern): ArrayValue;
 

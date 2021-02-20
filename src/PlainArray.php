@@ -198,7 +198,7 @@ final class PlainArray implements ArrayValue
     }
 
     /**
-     * @phpstan-param PlainArray<TValue> $other
+     * @phpstan-param ArrayValue<TValue> $other
      * @param (callable(TValue $valueA, TValue $valueB):int)|null $comparator
      * @phpstan-return PlainArray<TValue>
      */
@@ -216,7 +216,7 @@ final class PlainArray implements ArrayValue
     }
 
     /**
-     * @phpstan-param PlainArray<TValue> $other
+     * @phpstan-param ArrayValue<TValue> $other
      * @param (callable(TValue $valueA, TValue $valueB):int)|null $comparator
      * @phpstan-return PlainArray<TValue>
      */
@@ -394,7 +394,7 @@ final class PlainArray implements ArrayValue
     }
 
     /**
-     * @phpstan-return TValue[]
+     * @phpstan-return array<int, TValue>
      */
     public function toArray(): array
     {

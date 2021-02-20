@@ -2,15 +2,16 @@
 
 namespace GW\Value;
 
+use ArrayAccess;
 use BadMethodCallException;
+use IteratorAggregate;
 
 /**
- * @extends ArrayValue<StringValue>
+ * @extends IteratorAggregate<int, StringValue>
+ * @extends ArrayAccess<int, StringValue>
  */
-interface StringsArray extends ArrayValue, StringValue
+interface StringsArray extends Value, IteratorAggregate, ArrayAccess, StringValue
 {
-    // Array Value
-
     /**
      * @param callable(StringValue $value): void $callback
      */
@@ -51,7 +52,7 @@ interface StringsArray extends ArrayValue, StringValue
     /**
      * @template TNewKey
      * @param callable(StringValue $value):TNewKey $reducer
-     * @phpstan-return AssocValue<TNewKey, ArrayValue<StringValue>>
+     * @phpstan-return AssocValue<TNewKey, StringsArray>
      */
     public function groupBy(callable $reducer): AssocValue;
 
@@ -70,7 +71,7 @@ interface StringsArray extends ArrayValue, StringValue
     public function unshift($value): StringsArray;
 
     /**
-     * @param StringValue|string $value
+     * @param StringValue|null $value
      */
     public function shift(&$value = null): StringsArray;
 
@@ -80,7 +81,7 @@ interface StringsArray extends ArrayValue, StringValue
     public function push($value): StringsArray;
 
     /**
-     * @param mixed $value
+     * @param StringValue|null $value
      */
     public function pop(&$value = null): StringsArray;
 
@@ -109,29 +110,21 @@ interface StringsArray extends ArrayValue, StringValue
      */
     public function offsetUnset($offset): void;
 
-    /**
-     * @param StringsArray $other
-     */
-    public function join(ArrayValue $other): StringsArray;
+    public function join(StringsArray $other): StringsArray;
 
     public function slice(int $offset, int $length): StringsArray;
 
-    /**
-     * @param StringsArray $replacement
-     */
-    public function splice(int $offset, int $length, ?ArrayValue $replacement = null): StringsArray;
+    public function splice(int $offset, int $length, ?StringsArray $replacement = null): StringsArray;
 
     /**
-     * @param StringsArray $other
      * @param (callable(StringValue, StringValue):int)|null $comparator
      */
-    public function diff(ArrayValue $other, ?callable $comparator = null): StringsArray;
+    public function diff(StringsArray $other, ?callable $comparator = null): StringsArray;
 
     /**
-     * @param StringsArray $other
      * @param (callable(StringValue $valueA, StringValue $valueB):int)|null $comparator
      */
-    public function intersect(ArrayValue $other, ?callable $comparator = null): StringsArray;
+    public function intersect(StringsArray $other, ?callable $comparator = null): StringsArray;
 
     /**
      * @template TNewValue
@@ -273,4 +266,11 @@ interface StringsArray extends ArrayValue, StringValue
      * @return AssocValue<int, StringValue>
      */
     public function toAssocValue(): AssocValue;
+
+    /**
+     * @phpstan-return ArrayValue<array<int, StringValue>>
+     */
+    public function chunk(int $size): ArrayValue;
+
+    public function toStringsArray(): StringsArray;
 }

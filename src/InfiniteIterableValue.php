@@ -21,6 +21,20 @@ final class InfiniteIterableValue implements IterableValue
     }
 
     /**
+     * @template TNewKey
+     * @template TNewValue
+     * @param IterableValueStack<TNewKey, TNewValue> $stack
+     * @return self<TNewKey, TNewValue>
+     */
+    private function withStack(IterableValueStack $stack): self
+    {
+        $clone = clone $this;
+        $clone->stack = $stack;
+
+        return $clone;
+    }
+
+    /**
      * @param callable(TValue $value):void $callback
      * @phpstan-return InfiniteIterableValue<TKey, TValue>
      */
@@ -113,8 +127,7 @@ final class InfiniteIterableValue implements IterableValue
      */
     public function map(callable $transformer): InfiniteIterableValue
     {
-        $clone = clone $this;
-        $clone->stack = $clone->stack->push(
+        return $this->withStack($this->stack->push(
             /**
              * @phpstan-param iterable<TKey, TValue> $iterable
              * @phpstan-return iterable<TKey, TNewValue>
@@ -124,9 +137,7 @@ final class InfiniteIterableValue implements IterableValue
                     yield $transformer($value);
                 }
             }
-        );
-
-        return $clone;
+        ));
     }
 
     /**
@@ -136,8 +147,7 @@ final class InfiniteIterableValue implements IterableValue
      */
     public function flatMap(callable $transformer): InfiniteIterableValue
     {
-        $clone = clone $this;
-        $clone->stack = $clone->stack->push(
+        return $this->withStack($this->stack->push(
             /**
              * @phpstan-param iterable<TKey, TValue> $iterable
              * @phpstan-return iterable<TKey, TNewValue>
@@ -147,9 +157,7 @@ final class InfiniteIterableValue implements IterableValue
                     yield from $transformer($value);
                 }
             }
-        );
-
-        return $clone;
+        ));
     }
 
     /**
@@ -166,8 +174,7 @@ final class InfiniteIterableValue implements IterableValue
      */
     public function unshift($value): InfiniteIterableValue
     {
-        $clone = clone $this;
-        $clone->stack = $clone->stack->push(
+        return $this->withStack($this->stack->push(
             /**
              * @phpstan-param iterable<TKey, TValue> $iterable
              * @phpstan-return iterable<TKey, TValue>
@@ -176,9 +183,7 @@ final class InfiniteIterableValue implements IterableValue
                 yield $value;
                 yield from $iterable;
             }
-        );
-
-        return $clone;
+        ));
     }
 
     /**
@@ -187,8 +192,7 @@ final class InfiniteIterableValue implements IterableValue
      */
     public function push($value): InfiniteIterableValue
     {
-        $clone = clone $this;
-        $clone->stack = $clone->stack->push(
+        return $this->withStack($this->stack->push(
             /**
              * @phpstan-param iterable<TKey, TValue> $iterable
              * @phpstan-return iterable<TKey, TValue>
@@ -197,9 +201,7 @@ final class InfiniteIterableValue implements IterableValue
                 yield from $iterable;
                 yield $value;
             }
-        );
-
-        return $clone;
+        ));
     }
 
     /**
@@ -208,8 +210,7 @@ final class InfiniteIterableValue implements IterableValue
      */
     public function join(iterable $other): InfiniteIterableValue
     {
-        $clone = clone $this;
-        $clone->stack = $clone->stack->push(
+        return $this->withStack($this->stack->push(
             /**
              * @phpstan-param iterable<TKey, TValue> $iterable
              * @phpstan-return iterable<TKey, TValue>
@@ -218,9 +219,7 @@ final class InfiniteIterableValue implements IterableValue
                 yield from $iterable;
                 yield from $other;
             }
-        );
-
-        return $clone;
+        ));
     }
 
     /**
@@ -228,8 +227,7 @@ final class InfiniteIterableValue implements IterableValue
      */
     public function slice(int $offset, int $length): InfiniteIterableValue
     {
-        $clone = clone $this;
-        $clone->stack = $clone->stack->push(
+        return $this->withStack($this->stack->push(
             /**
              * @phpstan-param iterable<TKey, TValue> $iterable
              * @phpstan-return iterable<TKey, TValue>
@@ -247,9 +245,7 @@ final class InfiniteIterableValue implements IterableValue
                     }
                 }
             }
-        );
-
-        return $clone;
+        ));
     }
 
     /**
@@ -259,8 +255,7 @@ final class InfiniteIterableValue implements IterableValue
      */
     public function diff(ArrayValue $other, ?callable $comparator = null): InfiniteIterableValue
     {
-        $clone = clone $this;
-        $clone->stack = $clone->stack->push(
+        return $this->withStack($this->stack->push(
             /**
              * @phpstan-param iterable<TKey, TValue> $iterable
              * @phpstan-return iterable<TKey, TValue>
@@ -280,9 +275,7 @@ final class InfiniteIterableValue implements IterableValue
                     yield $value;
                 }
             }
-        );
-
-        return $clone;
+        ));
     }
 
     /**
@@ -292,8 +285,7 @@ final class InfiniteIterableValue implements IterableValue
      */
     public function intersect(ArrayValue $other, ?callable $comparator = null): InfiniteIterableValue
     {
-        $clone = clone $this;
-        $clone->stack = $clone->stack->push(
+        return $this->withStack($this->stack->push(
             /**
              * @phpstan-param iterable<TKey, TValue> $iterable
              * @phpstan-return iterable<TKey, TValue>
@@ -313,9 +305,7 @@ final class InfiniteIterableValue implements IterableValue
                     yield $value;
                 }
             }
-        );
-
-        return $clone;
+        ));
     }
 
     /**
@@ -398,8 +388,7 @@ final class InfiniteIterableValue implements IterableValue
      */
     public function chunk(int $size): InfiniteIterableValue
     {
-        $clone = clone $this;
-        $clone->stack = $this->stack->push(
+        return $this->withStack($this->stack->push(
             /**
              * @phpstan-param iterable<TKey, TValue> $iterable
              * @phpstan-return iterable<TKey, TValue[]>
@@ -420,9 +409,7 @@ final class InfiniteIterableValue implements IterableValue
                     yield $buffer;
                 }
             }
-        );
-
-        return $clone;
+        ));
     }
 
     /**
