@@ -5,15 +5,14 @@ namespace GW\Value\Numberable;
 use GW\Value\Arrayable;
 use GW\Value\Arrayable\JustArray;
 use GW\Value\Numberable;
-use GW\Value\NumberValue;
 use LogicException;
 
 final class Average implements Numberable
 {
-    /** @var Arrayable<NumberValue> */
+    /** @var Arrayable<Numberable> */
     private Arrayable $terms;
 
-    /** @param Arrayable<NumberValue> $terms */
+    /** @param Arrayable<Numberable> $terms */
     public function __construct(Arrayable $terms)
     {
         $this->terms = $terms;

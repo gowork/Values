@@ -54,7 +54,7 @@ interface NumbersArray extends ArrayValue
     /**
      * @template TNewKey
      * @param callable(NumberValue):TNewKey $reducer
-     * @phpstan-return AssocValue<TNewKey, NumbersArray>
+     * @phpstan-return AssocValue<TNewKey, ArrayValue<NumberValue>>
      */
     public function groupBy(callable $reducer): AssocValue;
 

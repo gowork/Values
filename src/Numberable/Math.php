@@ -6,10 +6,10 @@ use GW\Value\Numberable;
 
 final class Math
 {
-    /** @var callable(int|float):int|float */
+    /** @var callable(int|float):(int|float) */
     private $fn;
 
-    /** @param callable(int|float):int|float */
+    /** @param callable(int|float):(int|float) $fn */
     public function __construct(callable $fn)
     {
         $this->fn = $fn;

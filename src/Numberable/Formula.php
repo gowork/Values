@@ -7,11 +7,11 @@ use GW\Value\Numberable;
 final class Formula implements Numberable
 {
     private Numberable $numberable;
-    /** @var callable(int|float):int|float */
+    /** @var callable(int|float):(int|float) */
     private $fn;
 
     /**
-     * @param callable(int|float):int|float $fn
+     * @param callable(int|float):(int|float) $fn
      */
     public function __construct(Numberable $numberable, callable $fn)
     {

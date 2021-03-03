@@ -80,7 +80,7 @@ abstract class GenericArray implements ArrayValue
         }
 
         /** @phpstan-var array<TNewKey, ArrayValue<TValue>> $groupsWrapped */
-        $groupsWrapped = array_map([Wrap::class, 'array'], $groups);
+        $groupsWrapped = array_map([static::class, 'new'], $groups);
 
         return Wrap::assocArray($groupsWrapped);
     }

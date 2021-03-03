@@ -24,7 +24,7 @@ final class PlainArray extends GenericArray
     }
 
     /** @return Arrayable<TValue> */
-    public function items(): Arrayable
+    protected function items(): Arrayable
     {
         return $this->items;
     }
