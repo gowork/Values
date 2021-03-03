@@ -9,7 +9,7 @@ use GW\Value\Numberable\Floor;
 use GW\Value\Numberable\Multiply;
 use GW\Value\Numberable\Round;
 use GW\Value\Numberable\Subtract;
-use GW\Value\Numberable\Sum;
+use GW\Value\Numberable\Add;
 use function number_format;
 use const PHP_FLOAT_DIG;
 
@@ -56,7 +56,7 @@ final class PlainNumber implements NumberValue
 
     public function add(Numberable $other): NumberValue
     {
-        return new self(new Sum($this->number, $other));
+        return new self(new Add($this->number, $other));
     }
 
     public function subtract(Numberable $other): NumberValue

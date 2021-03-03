@@ -17,19 +17,19 @@ interface NumberValue extends Value, Numberable
     /**
      * @return int {-1, 0, 1}
      */
-    public function compare(NumberValue $other): int;
+    public function compare(Numberable $other): int;
 
-    public function equals(NumberValue $other): bool;
+    public function equals(Numberable $other): bool;
 
     // basic math
 
-    public function add(NumberValue $other): NumberValue;
+    public function add(Numberable $other): NumberValue;
 
-    public function subtract(NumberValue $other): NumberValue;
+    public function subtract(Numberable $other): NumberValue;
 
-    public function multiply(NumberValue $other): NumberValue;
+    public function multiply(Numberable $other): NumberValue;
 
-    public function divide(NumberValue $other): NumberValue;
+    public function divide(Numberable $other): NumberValue;
 
     public function abs(): NumberValue;
 

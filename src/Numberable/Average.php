@@ -3,11 +3,12 @@
 namespace GW\Value\Numberable;
 
 use GW\Value\Arrayable;
+use GW\Value\Arrayable\JustArray;
 use GW\Value\Numberable;
 use GW\Value\NumberValue;
-use function array_reduce;
+use LogicException;
 
-final class Sum implements Numberable
+final class Average implements Numberable
 {
     /** @var Arrayable<NumberValue> */
     private Arrayable $terms;
@@ -21,14 +22,12 @@ final class Sum implements Numberable
     /** @return int|float */
     public function toNumber()
     {
-        return array_reduce(
-            $this->terms->toArray(),
-            /**
-             * @param int|float $sum
-             * @return int|float
-             */
-            static fn($sum, Numberable $next) => $sum + $next->toNumber(),
-            0
-        );
+        $terms = $this->terms->toArray();
+        $count = count($terms);
+        if ($count === 0) {
+            throw new LogicException('Cannot calculate avg number from empty set');
+        }
+
+        return (new Sum(new JustArray($terms)))->toNumber() / $count;
     }
 }

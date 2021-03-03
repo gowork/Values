@@ -7,7 +7,7 @@ use GW\Value\Numberable\Divide;
 use GW\Value\Numberable\JustFloat;
 use GW\Value\Numberable\JustInteger;
 use GW\Value\Numberable\Math;
-use GW\Value\Numberable\Sum;
+use GW\Value\Numberable\Add;
 use PhpSpec\ObjectBehavior;
 use function acos;
 use function cos;
@@ -254,7 +254,7 @@ final class PlainNumberSpec extends ObjectBehavior
 
     function it_is_empty_when_zero_float()
     {
-        $this->beConstructedWith(new Sum(new JustFloat(-1.0), new JustFloat(1.0)));
+        $this->beConstructedWith(new Add(new JustFloat(-1.0), new JustFloat(1.0)));
 
         $this->isEmpty()->shouldBe(true);
     }
@@ -264,7 +264,7 @@ final class PlainNumberSpec extends ObjectBehavior
         $this->beConstructedWith(new JustInteger(100));
 
         $formula = fn(Numberable $number): Numberable => new Divide(
-            new Sum($number, new JustInteger(700)),
+            new Add($number, new JustInteger(700)),
             new JustInteger(2)
         );
 
