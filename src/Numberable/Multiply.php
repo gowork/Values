@@ -19,14 +19,6 @@ final class Multiply implements Numberable
 
     public function toNumber()
     {
-        return array_reduce(
-            $this->factors,
-            /**
-             * @param int|float $product
-             * @return int|float
-             */
-            static fn($product, Numberable $next) => $product * $next->toNumber(),
-            $this->factor->toNumber()
-        );
+        return array_reduce($this->factors, new MultiplyReducer(), $this->factor->toNumber());
     }
 }

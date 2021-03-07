@@ -20,14 +20,6 @@ final class Subtract implements Numberable
     /** @return int|float */
     public function toNumber()
     {
-        return array_reduce(
-            $this->terms,
-            /**
-             * @param int|float $difference
-             * @return int|float
-             */
-            static fn($difference, Numberable $next) => $difference - $next->toNumber(),
-            $this->term->toNumber()
-        );
+        return array_reduce($this->terms, new SubtractReducer(), $this->term->toNumber());
     }
 }

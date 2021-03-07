@@ -13,7 +13,9 @@ use GW\Value\PlainNumber;
 use PhpSpec\ObjectBehavior;
 use function acos;
 use function cos;
+use function exp;
 use function sin;
+use function sqrt;
 use const PHP_ROUND_HALF_DOWN;
 
 final class PlainNumberSpec extends ObjectBehavior
@@ -316,5 +318,7 @@ final class PlainNumberSpec extends ObjectBehavior
         $this->divide(new JustInteger(100))->calculate(Math::asin())->toNumber()->shouldBe(asin(.90));
         $this->calculate(Math::tan())->toNumber()->shouldBe(tan(90));
         $this->divide(new JustInteger(100))->calculate(Math::atan())->toNumber()->shouldBe(atan(.90));
+        $this->calculate(Math::exp())->toNumber()->shouldBe(exp(90));
+        $this->calculate(Math::sqrt())->toNumber()->shouldBe(sqrt(90));
     }
 }

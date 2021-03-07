@@ -66,6 +66,38 @@ final class Wrap
         return new PlainStringsArray(self::array($strings));
     }
 
+    /**
+     * @param int|float|Numberable $number
+     */
+    public static function number($number): NumberValue
+    {
+        if ($number instanceof NumberValue) {
+            return $number;
+        }
+
+        if ($number instanceof Numberable) {
+            return new PlainNumber($number);
+        }
+
+        return PlainNumber::from($number);
+    }
+
+    /**
+     * @param int[]|float[]|Arrayable<NumberValue>|NumbersArray<NumberValue> $numbers
+     */
+    public static function numbersArray($numbers): NumbersArray
+    {
+        if ($numbers instanceof NumbersArray) {
+            return $numbers;
+        }
+
+        if ($numbers instanceof Arrayable) {
+            return PlainNumbersArray::fromArrayable($numbers);
+        }
+
+        return PlainNumbersArray::just(...$numbers);
+    }
+
     private function __construct()
     {
         // prohibits creation objects of this class

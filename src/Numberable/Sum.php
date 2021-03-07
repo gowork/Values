@@ -20,14 +20,6 @@ final class Sum implements Numberable
     /** @return int|float */
     public function toNumber()
     {
-        return array_reduce(
-            $this->terms->toArray(),
-            /**
-             * @param int|float $sum
-             * @return int|float
-             */
-            static fn($sum, Numberable $next) => $sum + $next->toNumber(),
-            0
-        );
+        return array_reduce($this->terms->toArray(), new SumReducer(), 0);
     }
 }

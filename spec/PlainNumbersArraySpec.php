@@ -6,6 +6,7 @@ use BadMethodCallException;
 use Closure;
 use DivisionByZeroError;
 use GW\Value\Arrayable\JustArray;
+use GW\Value\Numberable\Add;
 use GW\Value\Numberable\CompareAsInt;
 use GW\Value\Numberable\JustInteger;
 use GW\Value\Numberable\JustNumbers;
@@ -107,9 +108,11 @@ final class PlainNumbersArraySpec extends ObjectBehavior
     {
         $this->beConstructedThrough('just', [1, 2, 3, 0, 4, 5, .0]);
 
-        $even = $this->filterEmpty();
-        $even->shouldBeAnInstanceOf(PlainNumbersArray::class);
-        $even->toNativeNumbers()->shouldBe([1, 2, 3, 4, 5]);
+        $notEmpty = $this->filterEmpty();
+        $notEmpty->shouldBeAnInstanceOf(PlainNumbersArray::class);
+        $notEmpty->toNativeNumbers()->shouldBe([1, 2, 3, 4, 5]);
+
+        $this->notEmpty()->toNativeNumbers()->shouldBe([1, 2, 3, 4, 5]);
     }
 
     function it_maps_to_ArrayValue()
@@ -277,7 +280,7 @@ final class PlainNumbersArraySpec extends ObjectBehavior
     {
         $this->beConstructedThrough('just', [1, 2, 2, 3, 3.0, 4, 4, 4.6, 5, 5.9]);
 
-        $this->diff(PlainNumbersArray::just(2, 3, 4), CompareAsInt::asc())->toNativeNumbers()->shouldBe([1, 5, 5.9]);
+        $this->diff(PlainNumbersArray::just(2, 3, 4), CompareAsInt::desc())->toNativeNumbers()->shouldBe([1, 5, 5.9]);
     }
 
     function it_resolves_intersect()
@@ -358,6 +361,19 @@ final class PlainNumbersArraySpec extends ObjectBehavior
         $this->beConstructedThrough('just', [1, 2, 3, 4, 5]);
 
         $this->reduce(fn(int $sum, NumberValue $number) => $sum + $number->toNumber(), 0)
+            ->shouldBe(15);
+    }
+
+    function it_reduces_to_number_value()
+    {
+        $this->beConstructedThrough('just', [1, 2, 3, 4, 5]);
+
+        $this
+            ->reduceNumber(
+                fn(NumberValue $sum, NumberValue $number): NumberValue => $sum->add($number),
+                PlainNumber::from(0)
+            )
+            ->toNumber()
             ->shouldBe(15);
     }
 
