@@ -2,12 +2,12 @@
 
 namespace GW\Value\Numberable;
 
-use GW\Value\NumberValue;
+use GW\Value\Numberable;
 
 final class ToScalarNumber
 {
     /** @return int|float */
-    public function __invoke(NumberValue $value)
+    public function __invoke(Numberable $value)
     {
         return $value->toNumber();
     }

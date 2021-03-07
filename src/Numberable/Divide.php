@@ -19,14 +19,6 @@ final class Divide implements Numberable
 
     public function toNumber()
     {
-        return array_reduce(
-            $this->divisors,
-            /**
-             * @param int|float $fraction
-             * @return int|float
-             */
-            static fn($fraction, Numberable $divisor) => $fraction / $divisor->toNumber(),
-            $this->dividend->toNumber()
-        );
+        return array_reduce($this->divisors, new DivideReducer(), $this->dividend->toNumber());
     }
 }

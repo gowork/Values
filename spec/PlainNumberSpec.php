@@ -2,12 +2,14 @@
 
 namespace spec\GW\Value;
 
+use DivisionByZeroError;
 use GW\Value\Numberable;
 use GW\Value\Numberable\Divide;
 use GW\Value\Numberable\JustFloat;
 use GW\Value\Numberable\JustInteger;
 use GW\Value\Numberable\Math;
 use GW\Value\Numberable\Add;
+use GW\Value\PlainNumber;
 use PhpSpec\ObjectBehavior;
 use function acos;
 use function cos;
@@ -140,6 +142,15 @@ final class PlainNumberSpec extends ObjectBehavior
         $this->divide(new JustInteger(5))->toNumber()->shouldBe(2.4);
     }
 
+    function it_throws_error_when_dividing_by_zero()
+    {
+        $this->beConstructedThrough(
+            fn() => (new PlainNumber(new JustInteger(12)))->divide(new JustInteger(0))
+        );
+
+        $this->shouldThrow(DivisionByZeroError::class)->during('toNumber');
+    }
+
     function it_divides_integer_and_float_returning_float()
     {
         $this->beConstructedWith(new JustInteger(12));
@@ -159,6 +170,30 @@ final class PlainNumberSpec extends ObjectBehavior
         $this->beConstructedWith(new JustFloat(12.5));
 
         $this->divide(new JustInteger(5))->toNumber()->shouldBe(2.5);
+    }
+
+    function it_calculates_modulo_of_integer()
+    {
+        $this->beConstructedWith(new JustInteger(12));
+
+        $this->modulo(new JustInteger(11))->toNumber()->shouldBe(1);
+        $this->modulo(new JustInteger(7))->toNumber()->shouldBe(5);
+    }
+
+    function it_calculates_modulo_of_float_just_like_php_does()
+    {
+        $this->beConstructedWith(new JustInteger(12));
+
+        $this->modulo(new JustFloat(11.9))->toNumber()->shouldBe(1);
+    }
+
+    function it_throws_error_when_modulo_divider_is_zero()
+    {
+        $this->beConstructedThrough(
+            fn() => (new PlainNumber(new JustInteger(12)))->modulo(new JustInteger(0))
+        );
+
+        $this->shouldThrow(DivisionByZeroError::class)->during('toNumber');
     }
 
     function it_absolutes_positive_integer()
@@ -273,13 +308,13 @@ final class PlainNumberSpec extends ObjectBehavior
 
     function it_calculates_math_formulas()
     {
-        $this->beConstructedWith(new JustInteger(100));
+        $this->beConstructedWith(new JustInteger(90));
 
-        $this->calculate(Math::cos())->toNumber()->shouldBe(cos(100));
-        $this->calculate(Math::acos())->toNumber()->shouldBe(acos(100));
-        $this->calculate(Math::sin())->toNumber()->shouldBe(sin(100));
-        $this->calculate(Math::asin())->toNumber()->shouldBe(asin(100));
-        $this->calculate(Math::tan())->toNumber()->shouldBe(tan(100));
-        $this->calculate(Math::atan())->toNumber()->shouldBe(atan(100));
+        $this->calculate(Math::cos())->toNumber()->shouldBe(cos(90));
+        $this->divide(new JustInteger(100))->calculate(Math::acos())->toNumber()->shouldBe(acos(.90));
+        $this->calculate(Math::sin())->toNumber()->shouldBe(sin(90));
+        $this->divide(new JustInteger(100))->calculate(Math::asin())->toNumber()->shouldBe(asin(.90));
+        $this->calculate(Math::tan())->toNumber()->shouldBe(tan(90));
+        $this->divide(new JustInteger(100))->calculate(Math::atan())->toNumber()->shouldBe(atan(.90));
     }
 }

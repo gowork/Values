@@ -2,10 +2,10 @@
 
 namespace GW\Value\Numberable;
 
+use DivisionByZeroError;
 use GW\Value\Arrayable;
 use GW\Value\Arrayable\JustArray;
 use GW\Value\Numberable;
-use LogicException;
 
 final class Average implements Numberable
 {
@@ -24,7 +24,7 @@ final class Average implements Numberable
         $terms = $this->terms->toArray();
         $count = count($terms);
         if ($count === 0) {
-            throw new LogicException('Cannot calculate avg number from empty set');
+            throw new DivisionByZeroError('Cannot calculate avg number from empty set');
         }
 
         return (new Sum(new JustArray($terms)))->toNumber() / $count;

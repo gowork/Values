@@ -4,14 +4,6 @@ namespace GW\Value;
 
 interface NumberValue extends Value, Numberable
 {
-    public function toInteger(): int;
-
-    public function toFloat(): float;
-
-    public function toStringValue(): StringValue;
-
-    public function format(int $decimals = 0, string $separator = '.' , string $thousandsSeparator = ','): StringValue;
-
     // comparators
 
     /**
@@ -33,6 +25,8 @@ interface NumberValue extends Value, Numberable
 
     public function abs(): NumberValue;
 
+    public function modulo(Numberable $divider): NumberValue;
+
     // rounding
 
     public function round(int $precision = 0, ?int $roundMode = null): NumberValue;
@@ -46,6 +40,18 @@ interface NumberValue extends Value, Numberable
 
     // value
 
-    /** @return bool false when 0, true otherwise */
+    /** @return bool false when 0 or 0.0, true otherwise */
     public function isEmpty(): bool;
+
+    // casting
+
+    public function format(int $decimals = 0, string $separator = '.' , string $thousandsSeparator = ','): StringValue;
+
+    public function toStringValue(): StringValue;
+
+    public function toInteger(): int;
+
+    public function toFloat(): float;
+
+    public function __toString(): string;
 }

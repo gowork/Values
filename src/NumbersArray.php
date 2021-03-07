@@ -54,7 +54,7 @@ interface NumbersArray extends ArrayValue
     /**
      * @template TNewKey
      * @param callable(NumberValue):TNewKey $reducer
-     * @phpstan-return AssocValue<TNewKey, ArrayValue<NumberValue>>
+     * @phpstan-return AssocValue<TNewKey, NumbersArray>
      */
     public function groupBy(callable $reducer): AssocValue;
 
@@ -98,28 +98,28 @@ interface NumbersArray extends ArrayValue
     public function offsetUnset($offset): void;
 
     /**
-     * @phpstan-param Arrayable<NumberValue> $other
+     * @phpstan-param ArrayValue<NumberValue> $other
      */
-    public function join(Arrayable $other): NumbersArray;
+    public function join(ArrayValue $other): NumbersArray;
 
     public function slice(int $offset, int $length): NumbersArray;
 
     /**
-     * @phpstan-param Arrayable<NumberValue>|null $replacement
+     * @phpstan-param ArrayValue<NumberValue>|null $replacement
      */
-    public function splice(int $offset, int $length, ?Arrayable $replacement = null): NumbersArray;
+    public function splice(int $offset, int $length, ?ArrayValue $replacement = null): NumbersArray;
 
     /**
-     * @phpstan-param Arrayable<NumberValue> $other
+     * @phpstan-param ArrayValue<NumberValue> $other
      * @param (callable(NumberValue,NumberValue):int)|null $comparator
      */
-    public function diff(Arrayable $other, ?callable $comparator = null): NumbersArray;
+    public function diff(ArrayValue $other, ?callable $comparator = null): NumbersArray;
 
     /**
-     * @phpstan-param Arrayable<NumberValue> $other
+     * @phpstan-param ArrayValue<NumberValue> $other
      * @param (callable(NumberValue,NumberValue):int)|null $comparator
      */
-    public function intersect(Arrayable $other, ?callable $comparator = null): NumbersArray;
+    public function intersect(ArrayValue $other, ?callable $comparator = null): NumbersArray;
 
     /**
      * @template TNewValue
@@ -128,6 +128,11 @@ interface NumbersArray extends ArrayValue
      * @phpstan-return TNewValue
      */
     public function reduce(callable $transformer, $start);
+
+    /**
+     * @param callable(NumberValue $reduced, NumberValue $item):NumberValue $transformer
+     */
+    public function reduceNumber(callable $transformer, NumberValue $start): NumberValue;
 
     public function implode(string $glue): StringValue;
 

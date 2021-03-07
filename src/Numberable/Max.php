@@ -5,7 +5,6 @@ namespace GW\Value\Numberable;
 use GW\Value\Arrayable;
 use GW\Value\Arrayable\Map;
 use GW\Value\Numberable;
-use GW\Value\NumberValue;
 use LogicException;
 use function count;
 
@@ -14,7 +13,7 @@ final class Max implements Numberable
     /** @var Arrayable<int|float> */
     private Arrayable $numbers;
 
-    /** @param Arrayable<NumberValue> $numbers */
+    /** @param Arrayable<Numberable> $numbers */
     public function __construct(Arrayable $numbers)
     {
         $this->numbers = new Map($numbers, new ToScalarNumber());
