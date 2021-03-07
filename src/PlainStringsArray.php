@@ -97,7 +97,7 @@ final class PlainStringsArray implements StringsArray
 
     /**
      * @param callable(StringValue $value):string $reducer
-     * @phpstan-return AssocValue<string, ArrayValue<StringValue>>
+     * @phpstan-return AssocValue<string, NumbersArray>
      * @phpstan-ignore-next-line shrug
      */
     public function groupBy(callable $reducer): AssocValue

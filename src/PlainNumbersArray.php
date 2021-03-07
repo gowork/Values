@@ -129,14 +129,21 @@ final class PlainNumbersArray implements NumbersArray
      * @template TNewKey
      * @param callable(NumberValue):TNewKey $reducer
      * @return AssocValue<TNewKey, NumbersArray>
+     * @phpstan-ignore-next-line shrug
      */
     public function groupBy(callable $reducer): AssocValue
     {
-        return $this->numbers->groupBy($reducer)->map(fn(ArrayValue $numbers) => new self($numbers));
+        // @phpstan-ignore-next-line shrug
+        return $this->numbers
+            // @phpstan-ignore-next-line shrug
+            ->groupBy($reducer)
+            // @phpstan-ignore-next-line shrug
+            ->map(static fn(ArrayValue $numbers) => new self($numbers));
     }
 
     /**
      * @return ArrayValue<array<int, NumberValue>>
+     * @phpstan-ignore-next-line shrug
      */
     public function chunk(int $size): ArrayValue
     {
