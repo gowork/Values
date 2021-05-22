@@ -13,7 +13,7 @@ function stan() {
 }
 
 function psalm() {
-  ./bin/psalm --show-info=true
+  ./bin/psalm
 }
 
 function coverage() {

@@ -79,7 +79,7 @@ final class Wrap
     }
 
     /**
-     * @param array<int|float|numeric-string>|Arrayable<NumberValue>|NumbersArray $numbers
+     * @param array<int,int|float|numeric-string>|Arrayable<NumberValue>|NumbersArray $numbers
      */
     public static function numbersArray($numbers): NumbersArray
     {

@@ -4,6 +4,7 @@ namespace GW\Value\Numberable;
 
 use GW\Value\Arrayable\JustArray;
 use GW\Value\Numberable;
+use function array_values;
 
 final class Add implements Numberable
 {
@@ -11,7 +12,7 @@ final class Add implements Numberable
 
     public function __construct(Numberable $term, Numberable ...$terms)
     {
-        $this->sum = new Sum(new JustArray([$term, ...$terms]));
+        $this->sum = new Sum(new JustArray([$term, ...array_values($terms)]));
     }
 
     /** @return int|float */
