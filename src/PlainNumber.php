@@ -7,7 +7,6 @@ use GW\Value\Numberable\Add;
 use GW\Value\Numberable\Ceil;
 use GW\Value\Numberable\Divide;
 use GW\Value\Numberable\Floor;
-use GW\Value\Numberable\JustInteger;
 use GW\Value\Numberable\JustNumber;
 use GW\Value\Numberable\Modulo;
 use GW\Value\Numberable\Multiply;
@@ -26,10 +25,10 @@ final class PlainNumber implements NumberValue
         $this->number = $number;
     }
 
-    /** @param int|float $number */
+    /** @param int|float|numeric-string|Numberable $number */
     public static function from($number): self
     {
-        return new self(new JustNumber($number));
+        return new self(JustNumber::wrap($number));
     }
 
     public function format(int $decimals = 0, string $separator = '.', string $thousandsSeparator = ','): StringValue
@@ -37,39 +36,46 @@ final class PlainNumber implements NumberValue
         return Wrap::string(number_format($this->number->toNumber(), $decimals, $separator, $thousandsSeparator));
     }
 
-    public function compare(Numberable $other): int
+    /** @param int|float|numeric-string|Numberable $other */
+    public function compare($other): int
     {
-        return $this->toNumber() <=> $other->toNumber();
+        return $this->toNumber() <=> JustNumber::wrap($other)->toNumber();
     }
 
-    public function equals(Numberable $other): bool
+    /** @param int|float|numeric-string|Numberable $other */
+    public function equals($other): bool
     {
         return $this->compare($other) === 0;
     }
 
-    public function add(Numberable $other): NumberValue
+    /** @param int|float|numeric-string|Numberable $other */
+    public function add($other): NumberValue
     {
-        return new self(new Add($this->number, $other));
+        return new self(new Add($this->number, JustNumber::wrap($other)));
     }
 
-    public function subtract(Numberable $other): NumberValue
+    /** @param int|float|numeric-string|Numberable $other */
+    public function subtract($other): NumberValue
     {
-        return new self(new Subtract($this->number, $other));
+        return new self(new Subtract($this->number, JustNumber::wrap($other)));
     }
 
-    public function multiply(Numberable $other): NumberValue
+    /** @param int|float|numeric-string|Numberable $other */
+    public function multiply($other): NumberValue
     {
-        return new self(new Multiply($this->number, $other));
+        return new self(new Multiply($this->number, JustNumber::wrap($other)));
     }
 
-    public function divide(Numberable $other): NumberValue
+    /** @param int|float|numeric-string|Numberable $other */
+    public function divide($other): NumberValue
     {
-        return new self(new Divide($this->number, $other));
+        return new self(new Divide($this->number, JustNumber::wrap($other)));
     }
 
-    public function modulo(Numberable $divider): NumberValue
+    /** @param int|float|numeric-string|Numberable $divider */
+    public function modulo($divider): NumberValue
     {
-        return new self(new Modulo($this->number, $divider));
+        return new self(new Modulo($this->number, JustNumber::wrap($divider)));
     }
 
     public function abs(): NumberValue

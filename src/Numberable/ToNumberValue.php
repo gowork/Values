@@ -8,6 +8,8 @@ use GW\Value\PlainNumber;
 use LogicException;
 use function is_float;
 use function is_int;
+use function is_numeric;
+use function is_string;
 
 final class ToNumberValue
 {
@@ -30,7 +32,9 @@ final class ToNumberValue
             return new PlainNumber(new JustFloat($number));
         }
 
-        //TODO number from numeric string?
+        if (is_string($number) && is_numeric($number)) {
+            return new PlainNumber(new JustNumber($number + 0));
+        }
 
         throw new LogicException('Cannot cast value to NumberValue');
     }

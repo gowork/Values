@@ -40,21 +40,21 @@ interface NumbersArray extends ArrayValue
     /**
      * @template TNewValue
      * @param callable(NumberValue):TNewValue $transformer
-     * @phpstan-return ArrayValue<TNewValue>
+     * @return ArrayValue<TNewValue>
      */
     public function map(callable $transformer): ArrayValue;
 
     /**
      * @template TNewValue
      * @param callable(NumberValue):iterable<TNewValue> $transformer
-     * @phpstan-return ArrayValue<TNewValue>
+     * @return ArrayValue<TNewValue>
      */
     public function flatMap(callable $transformer): ArrayValue;
 
     /**
      * @template TNewKey
      * @param callable(NumberValue):TNewKey $reducer
-     * @phpstan-return AssocValue<TNewKey, ArrayValue<NumberValue>>
+     * @return AssocValue<TNewKey, ArrayValue<NumberValue>>
      */
     public function groupBy(callable $reducer): AssocValue;
 
@@ -65,22 +65,22 @@ interface NumbersArray extends ArrayValue
     public function reverse(): NumbersArray;
 
     /**
-     * @phpstan-param NumberValue $value
+     * @param NumberValue $value
      */
     public function unshift($value): NumbersArray;
 
     /**
-     * @phpstan-param NumberValue $value
+     * @param NumberValue|null $value
      */
     public function shift(&$value = null): NumbersArray;
 
     /**
-     * @phpstan-param NumberValue $value
+     * @param NumberValue $value
      */
     public function push($value): NumbersArray;
 
     /**
-     * @phpstan-param NumberValue $value
+     * @param NumberValue|null $value
      */
     public function pop(&$value = null): NumbersArray;
 
@@ -93,25 +93,25 @@ interface NumbersArray extends ArrayValue
     public function offsetUnset($offset): void;
 
     /**
-     * @phpstan-param ArrayValue<NumberValue> $other
+     * @param ArrayValue<NumberValue> $other
      */
     public function join(ArrayValue $other): NumbersArray;
 
     public function slice(int $offset, int $length): NumbersArray;
 
     /**
-     * @phpstan-param ArrayValue<NumberValue>|null $replacement
+     * @param ArrayValue<NumberValue>|null $replacement
      */
     public function splice(int $offset, int $length, ?ArrayValue $replacement = null): NumbersArray;
 
     /**
-     * @phpstan-param ArrayValue<NumberValue> $other
+     * @param ArrayValue<NumberValue> $other
      * @param (callable(NumberValue,NumberValue):int)|null $comparator
      */
     public function diff(ArrayValue $other, ?callable $comparator = null): NumbersArray;
 
     /**
-     * @phpstan-param ArrayValue<NumberValue> $other
+     * @param ArrayValue<NumberValue> $other
      * @param (callable(NumberValue,NumberValue):int)|null $comparator
      */
     public function intersect(ArrayValue $other, ?callable $comparator = null): NumbersArray;
@@ -119,8 +119,8 @@ interface NumbersArray extends ArrayValue
     /**
      * @template TNewValue
      * @param callable(TNewValue, NumberValue):TNewValue $transformer
-     * @phpstan-param TNewValue $start
-     * @phpstan-return TNewValue
+     * @param TNewValue $start
+     * @return TNewValue
      */
     public function reduce(callable $transformer, $start);
 
@@ -134,7 +134,7 @@ interface NumbersArray extends ArrayValue
     public function notEmpty(): NumbersArray;
 
     /**
-     * @phpstan-return AssocValue<int, NumberValue>
+     * @return AssocValue<int, NumberValue>
      */
     public function toAssocValue(): AssocValue;
 
@@ -155,7 +155,7 @@ interface NumbersArray extends ArrayValue
     public function findLast(callable $filter): ?NumberValue;
 
     /**
-     * @phpstan-param NumberValue $element
+     * @param NumberValue $element
      */
     public function hasElement($element): bool;
 

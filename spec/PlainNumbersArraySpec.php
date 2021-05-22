@@ -6,10 +6,11 @@ use BadMethodCallException;
 use Closure;
 use DivisionByZeroError;
 use GW\Value\Arrayable\JustArray;
-use GW\Value\Numberable\Add;
 use GW\Value\Numberable\CompareAsInt;
+use GW\Value\Numberable\JustFloat;
 use GW\Value\Numberable\JustInteger;
-use GW\Value\Numberable\JustNumbers;
+use GW\Value\Numberable\JustNumber;
+use GW\Value\Numberable\Zero;
 use GW\Value\NumberValue;
 use GW\Value\PlainArray;
 use GW\Value\PlainNumber;
@@ -38,6 +39,20 @@ final class PlainNumbersArraySpec extends ObjectBehavior
         $this->sum()->toNumber()->shouldBeApproximately(7.5, 1.0e-9);
     }
 
+    function it_calculates_sum_of_mixed_numerics()
+    {
+        $this->beConstructedThrough('just', [.5, 1, '1.5', '2', new JustFloat(2.5), PlainNumber::from(2)]);
+
+        $this->sum()->toNumber()->shouldBeApproximately(9.5, 1.0e-9);
+    }
+
+    function it_fails_to_create_sum_with_non_numeric()
+    {
+        $this->beConstructedThrough('just', [.5, 1, 'x']);
+
+        $this->sum()->shouldThrow(LogicException::class)->during('toNumber');
+    }
+
     function it_calculates_average_of_integers()
     {
         $this->beConstructedThrough('just', [1, 2, 3, 4, 5, 6, 7]);
@@ -48,6 +63,13 @@ final class PlainNumbersArraySpec extends ObjectBehavior
     function it_calculates_average_of_floats()
     {
         $this->beConstructedThrough('just', [1.1, 1.2, 1.3, 1.4, 1.5, 2.2]);
+
+        $this->average()->toNumber()->shouldBeApproximately(1.45, 1.0e-9);
+    }
+
+    function it_calculates_average_of_numerics()
+    {
+        $this->beConstructedThrough('just', [1.1, '1.2', 1.3, new JustNumber(1.4), PlainNumber::from(1.7), '2']);
 
         $this->average()->toNumber()->shouldBeApproximately(1.45, 1.0e-9);
     }
@@ -73,6 +95,13 @@ final class PlainNumbersArraySpec extends ObjectBehavior
         $this->min()->toNumber()->shouldBe(-.2);
     }
 
+    function it_returns_min_of_numerics()
+    {
+        $this->beConstructedThrough('just', [2, .1, '-0.2', new Zero(), '11']);
+
+        $this->min()->toNumber()->shouldBe(-.2);
+    }
+
     function it_returns_max_of_integers()
     {
         $this->beConstructedThrough('just', [6, 2, 1, 7, -2, 3, 4, 5]);
@@ -85,6 +114,13 @@ final class PlainNumbersArraySpec extends ObjectBehavior
         $this->beConstructedThrough('just', [.6, .2, .1, .7, -.2, .3, .4, .5]);
 
         $this->max()->toNumber()->shouldBe(.7);
+    }
+
+    function it_returns_max_of_numerics()
+    {
+        $this->beConstructedThrough('just', ['0.1', '7', -.2, new Zero()]);
+
+        $this->max()->toNumber()->shouldBe(7);
     }
 
     function it_cannot_calculate_min_nor_max_from_empty_set()

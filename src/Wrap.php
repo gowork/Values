@@ -67,7 +67,7 @@ final class Wrap
     }
 
     /**
-     * @param int|float|Numberable $number
+     * @param int|float|numeric-string|Numberable $number
      */
     public static function number($number): NumberValue
     {
@@ -75,15 +75,11 @@ final class Wrap
             return $number;
         }
 
-        if ($number instanceof Numberable) {
-            return new PlainNumber($number);
-        }
-
         return PlainNumber::from($number);
     }
 
     /**
-     * @param int[]|float[]|Arrayable<NumberValue>|NumbersArray<NumberValue> $numbers
+     * @param array<int|float|numeric-string>|Arrayable<NumberValue>|NumbersArray $numbers
      */
     public static function numbersArray($numbers): NumbersArray
     {

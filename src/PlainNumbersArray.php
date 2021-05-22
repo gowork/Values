@@ -28,7 +28,7 @@ final class PlainNumbersArray implements NumbersArray
         return new self(new PlainArray($numbers));
     }
 
-    /** @param int|float ...$numbers */
+    /** @param int|float|numeric-string|Numberable ...$numbers */
     public static function just(...$numbers): self
     {
         return self::fromArrayable(new JustNumbers(...$numbers));
@@ -190,7 +190,7 @@ final class PlainNumbersArray implements NumbersArray
     }
 
     /**
-     * @param NumberValue $value
+     * @param NumberValue|null $value
      */
     public function pop(&$value = null): NumbersArray
     {

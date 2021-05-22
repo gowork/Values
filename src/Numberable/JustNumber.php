@@ -9,15 +9,21 @@ final class JustNumber implements Numberable
     /** @var int|float */
     private $number;
 
-    /** @param int|float $number */
+    /** @param int|float|numeric-string $number */
     public function __construct($number)
     {
-        $this->number = $number;
+        $this->number = $number + 0;
+    }
+
+    /** @param int|float|numeric-string|Numberable $number */
+    public static function wrap($number): Numberable
+    {
+        return $number instanceof Numberable ? $number : new self($number);
     }
 
     /** @return int|float */
     public function toNumber()
     {
-        return $this->number;
+        return $this->number + 0;
     }
 }

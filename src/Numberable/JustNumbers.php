@@ -5,6 +5,7 @@ namespace GW\Value\Numberable;
 use GW\Value\Arrayable;
 use GW\Value\Arrayable\JustArray;
 use GW\Value\Arrayable\Map;
+use GW\Value\Numberable;
 use GW\Value\NumberValue;
 
 /**
@@ -15,7 +16,7 @@ final class JustNumbers implements Arrayable
     /** @var Arrayable<NumberValue> */
     private Arrayable $numbers;
 
-    /** @param int|float ...$numbers */
+    /** @param int|float|numeric-string|Numberable ...$numbers */
     public function __construct(...$numbers)
     {
         $this->numbers = new Map(new JustArray($numbers), new ToNumberValue());
