@@ -191,4 +191,6 @@ interface ArrayValue extends Value, Collection, Stack, IteratorAggregate, ArrayA
     public function toAssocValue(): AssocValue;
 
     public function toStringsArray(): StringsArray;
+
+    public function toNumbersArray(): NumbersArray;
 }

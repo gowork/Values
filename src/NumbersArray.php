@@ -30,6 +30,9 @@ interface NumbersArray extends ArrayValue
     /** @return NumberValue[] */
     public function toArray(): array;
 
+    /** @return array<int|float> */
+    public function toNativeNumbers(): array;
+
     /**
      * @param callable(NumberValue):bool $filter
      */

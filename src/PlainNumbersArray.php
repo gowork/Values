@@ -174,7 +174,7 @@ final class PlainNumbersArray implements NumbersArray
     }
 
     /**
-     * @param NumberValue $value
+     * @param NumberValue|null $value
      */
     public function shift(&$value = null): NumbersArray
     {
@@ -311,6 +311,11 @@ final class PlainNumbersArray implements NumbersArray
     public function toStringsArray(): StringsArray
     {
         return $this->numbers->toStringsArray();
+    }
+
+    public function toNumbersArray(): NumbersArray
+    {
+        return $this;
     }
 
     public function first(): ?NumberValue

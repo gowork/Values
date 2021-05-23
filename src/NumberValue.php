@@ -7,42 +7,42 @@ interface NumberValue extends Value, Numberable
     // comparators
 
     /**
-     * @param int|float|Numberable $other
+     * @param int|float|numeric-string|Numberable $other
      * @return int {-1, 0, 1}
      */
     public function compare($other): int;
 
     /**
-     * @param int|float|Numberable $other
+     * @param int|float|numeric-string|Numberable $other
      */
     public function equals($other): bool;
 
     // basic math
 
     /**
-     * @param int|float|Numberable $other
+     * @param int|float|numeric-string|Numberable $other
      */
     public function add($other): NumberValue;
 
     /**
-     * @param int|float|Numberable $other
+     * @param int|float|numeric-string|Numberable $other
      */
     public function subtract($other): NumberValue;
 
     /**
-     * @param int|float|Numberable $other
+     * @param int|float|numeric-string|Numberable $other
      */
     public function multiply($other): NumberValue;
 
     /**
-     * @param int|float|Numberable $other
+     * @param int|float|numeric-string|Numberable $other
      */
     public function divide($other): NumberValue;
 
     public function abs(): NumberValue;
 
     /**
-     * @param int|float|Numberable $divider
+     * @param int|float|numeric-string|Numberable $divider
      */
     public function modulo($divider): NumberValue;
 

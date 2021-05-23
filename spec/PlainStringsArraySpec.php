@@ -565,6 +565,15 @@ final class PlainStringsArraySpec extends ObjectBehavior
         $matches->shouldBeLike(new PlainArray([['Lorem', 'Lorem'], ['dolor', 'dolor']]));
     }
 
+    function it_can_be_converted_to_NumbersArray()
+    {
+        $this->beConstructedWithStrings('1', '2.1', '3.0');
+
+        $this->toNumbersArray()
+            ->toNativeNumbers()
+            ->shouldBeLike([1, 2.1, 3.0]);
+    }
+
     private function beConstructedWithStrings(string ...$strings): void
     {
         $this->beConstructedWith(Wrap::array($strings));

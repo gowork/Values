@@ -4,6 +4,8 @@ namespace spec\GW\Value;
 
 use GW\Value\ArrayValue;
 use GW\Value\Filters;
+use GW\Value\Numberable\JustInteger;
+use GW\Value\NumbersArray;
 use GW\Value\PlainArray;
 use GW\Value\Sorts;
 use GW\Value\StringsArray;
@@ -671,6 +673,15 @@ final class PlainArraySpec extends ObjectBehavior
         $stringsArray = $this->toStringsArray();
         $stringsArray->shouldBeAnInstanceOf(StringsArray::class);
         $stringsArray->toNativeStrings()->shouldBeLike(['one', 'two', 'three']);
+    }
+
+    function it_can_be_converted_to_NumbersArray()
+    {
+        $this->beConstructedWith(['1', 2.1, new JustInteger(3)]);
+
+        $numbersArray = $this->toNumbersArray();
+        $numbersArray->shouldBeAnInstanceOf(NumbersArray::class);
+        $numbersArray->toNativeNumbers()->shouldBeLike([1, 2.1, 3]);
     }
 
     function it_can_tell_if_has_element_or_not()
