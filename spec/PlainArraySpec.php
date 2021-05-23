@@ -2,13 +2,17 @@
 
 namespace spec\GW\Value;
 
+use GW\Value\ArrayValue;
 use GW\Value\Filters;
+use GW\Value\Numberable\JustInteger;
+use GW\Value\NumbersArray;
 use GW\Value\PlainArray;
 use GW\Value\Sorts;
 use GW\Value\StringsArray;
 use GW\Value\Wrap;
 use PhpSpec\Exception\Example\FailureException;
 use PhpSpec\ObjectBehavior;
+use PhpSpec\Wrapper\Subject;
 
 final class PlainArraySpec extends ObjectBehavior
 {
@@ -109,14 +113,14 @@ final class PlainArraySpec extends ObjectBehavior
             return ($value % 2) === 0 ? 'even' : 'odd';
         };
 
-        $this->groupBy($transformer)
-            ->toAssocArray()
-            ->shouldBeLike(
-                [
-                    'even' => Wrap::array([2, 4, 10, 100]),
-                    'odd' => Wrap::array([1, 3, 5, 101])
-                ]
-            );
+        $grouped = $this->groupBy($transformer);
+        $even = $grouped->get('even');
+        $even->shouldBeAnInstanceOf(ArrayValue::class);
+        $even->toArray()->shouldBe([2, 4, 10, 100]);
+
+        $odd = $grouped->get('odd');
+        $odd->shouldBeAnInstanceOf(ArrayValue::class);
+        $odd->toArray()->shouldBe([1, 3, 5, 101]);
     }
 
     function it_can_be_grouped_by_integer_key()
@@ -128,14 +132,9 @@ final class PlainArraySpec extends ObjectBehavior
         };
 
         $grouped = $this->groupBy($transformer);
-        $grouped->toAssocArray()->shouldBeLike(
-            [
-                0 => Wrap::array([3, 6, 9]),
-                1 => Wrap::array([1, 4, 7]),
-                2 => Wrap::array([2, 5, 8])
-            ]
-        );
         $grouped->get('0')->toArray()->shouldReturn([3, 6, 9]);
+        $grouped->get('1')->toArray()->shouldReturn([1, 4, 7]);
+        $grouped->get('2')->toArray()->shouldReturn([2, 5, 8]);
     }
 
     function it_can_be_partitioned_by_boolean_value()
@@ -147,14 +146,8 @@ final class PlainArraySpec extends ObjectBehavior
         };
 
         $grouped = $this->groupBy($isEven);
-        $grouped->shouldBeLike(
-            Wrap::assocArray([
-                0 => Wrap::array([1, 3, 5, 7, 9]),
-                1 => Wrap::array([2, 4, 6, 8]),
-            ])
-        );
-
-        $grouped->get('1')->shouldBeLike(Wrap::array([2, 4, 6, 8]));
+        $grouped->get(1)->toArray()->shouldReturn([2, 4, 6, 8]);
+        $grouped->get(0)->toArray()->shouldReturn([1, 3, 5, 7, 9]);
     }
 
     function it_allows_to_check_if_any_element_satisfies_filter_condition()
@@ -680,6 +673,15 @@ final class PlainArraySpec extends ObjectBehavior
         $stringsArray = $this->toStringsArray();
         $stringsArray->shouldBeAnInstanceOf(StringsArray::class);
         $stringsArray->toNativeStrings()->shouldBeLike(['one', 'two', 'three']);
+    }
+
+    function it_can_be_converted_to_NumbersArray()
+    {
+        $this->beConstructedWith(['1', 2.1, new JustInteger(3)]);
+
+        $numbersArray = $this->toNumbersArray();
+        $numbersArray->shouldBeAnInstanceOf(NumbersArray::class);
+        $numbersArray->toNativeNumbers()->shouldBeLike([1, 2.1, 3]);
     }
 
     function it_can_tell_if_has_element_or_not()

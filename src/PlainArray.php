@@ -23,6 +23,7 @@ use GW\Value\Arrayable\Sort;
 use GW\Value\Arrayable\Splice;
 use GW\Value\Arrayable\UniqueByComparator;
 use GW\Value\Arrayable\UniqueByString;
+use GW\Value\Numberable\ToNumberValue;
 use function array_map;
 use function array_reverse;
 use function count;
@@ -448,5 +449,10 @@ final class PlainArray implements ArrayValue
     public function toStringsArray(): StringsArray
     {
         return Wrap::stringsArray($this->items->toArray());
+    }
+
+    public function toNumbersArray(): NumbersArray
+    {
+        return new PlainNumbersArray($this->map(new ToNumberValue()));
     }
 }

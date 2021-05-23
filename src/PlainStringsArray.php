@@ -2,11 +2,11 @@
 
 namespace GW\Value;
 
+use GW\Value\Numberable\ToNumberValue;
+use GW\Value\Stringable\ToNativeString;
 use GW\Value\Stringable\ToStringValue;
 use Traversable;
-use InvalidArgumentException;
 use function in_array;
-use function is_scalar;
 
 final class PlainStringsArray implements StringsArray
 {
@@ -216,7 +216,7 @@ final class PlainStringsArray implements StringsArray
     public function toNativeStrings(): array
     {
         return $this->strings
-            ->map(fn(StringValue $item): string => $item->toString())
+            ->map(new ToNativeString())
             ->toArray();
     }
 
@@ -616,5 +616,10 @@ final class PlainStringsArray implements StringsArray
     public function toStringsArray(): self
     {
         return $this;
+    }
+
+    public function toNumbersArray(): NumbersArray
+    {
+        return new PlainNumbersArray($this->strings->map(new ToNativeString())->map(new ToNumberValue()));
     }
 }
