@@ -116,6 +116,10 @@ interface StringsArray extends ArrayValue, StringValue
 
     public function slice(int $offset, int $length): StringsArray;
 
+    public function skip(int $length): StringsArray;
+
+    public function take(int $length): StringsArray;
+
     /**
      * @param StringsArray $replacement
      */

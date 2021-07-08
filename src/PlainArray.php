@@ -161,6 +161,22 @@ final class PlainArray implements ArrayValue
     }
 
     /**
+     * @phpstan-return PlainArray<TValue>
+     */
+    public function skip(int $length): PlainArray
+    {
+        return $this->slice($length, $this->count() - $length);
+    }
+
+    /**
+     * @phpstan-return PlainArray<TValue>
+     */
+    public function take(int $length): PlainArray
+    {
+        return $this->slice(0, $length);
+    }
+
+    /**
      * @phpstan-param ArrayValue<TValue> $replacement
      * @phpstan-return PlainArray<TValue>
      */

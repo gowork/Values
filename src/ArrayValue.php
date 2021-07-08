@@ -151,6 +151,16 @@ interface ArrayValue extends Value, Collection, Stack, IteratorAggregate, ArrayA
     public function slice(int $offset, int $length): ArrayValue;
 
     /**
+     * @phpstan-return ArrayValue<TValue>
+     */
+    public function skip(int $length): ArrayValue;
+
+    /**
+     * @phpstan-return ArrayValue<TValue>
+     */
+    public function take(int $length): ArrayValue;
+
+    /**
      * @phpstan-param ArrayValue<TValue> $replacement
      * @phpstan-return ArrayValue<TValue>
      */
